@@ -12,6 +12,7 @@
 #
 
 from datetime import date
+import datetime
 import math
 
 #formulae
@@ -46,14 +47,46 @@ def ageInYearsMonthsAndDays(currentDate, birthDate):
     (frac, days) = math.modf(daysComponent)
     return str(int(years)) + " years, " + str(int(months)) + " months & " + str(int(days)) + " days"
 
-def main():
-    currentDate = date.today()
-    birthDate = date(1994,7,23)    #date(yyyy,m,d)
-    futureDate = date(2032,7,1)
+def getAge(currentDate, birthDate):
+    print("\n\nAge of the person born on", birthDate.strftime("%d %B, %Y"),":\n", ageInYearsMonthsAndDays(currentDate, birthDate))
+    print(" or", ageInWeeks(currentDate, birthDate))
+    print(" or", ageInDays(currentDate, birthDate), " days\n\n" )
 
-    print("\n\nAge of the person born on", birthDate.strftime("%d %B, %Y"),":\n", ageInYearsMonthsAndDays(futureDate, birthDate))
-    print(" or", ageInWeeks(futureDate, birthDate))
-    print(" or", ageInDays(futureDate, birthDate), " days\n\n" )
+def getBirthDate():
+    birthDateString = input("Enter date of birth as yyyy-mm-dd\n\n")
+    birthDate = datetime.datetime.strptime(birthDateString, '%Y-%m-%d').date()
+    return birthDate
+
+def askForUserInput():
+        userSelection = input("1. Calculate age as of today\n2. Calculate age as of a future date\n\n")
+        if userSelection.isdigit():
+            if int(userSelection) == 1:
+                birthDate = getBirthDate()
+                currentDate = date.today()
+                getAge(currentDate, birthDate)
+            elif int(userSelection) == 2:
+                birthDate = getBirthDate()
+                birthDateString = input("\n\nEnter a date of future date as yyyy-mm-dd\n\n")
+                futureDate = datetime.datetime.strptime(birthDateString, '%Y-%m-%d').date()
+                getAge(futureDate, birthDate)                
+            else:
+                print("invalid input. Please try again.\nPlease select from one of the below options:")
+                askForUserInput()
+        else:
+            print("invalid input. Please try again.\nPlease select from one of the below options:")
+            askForUserInput()
+
+def main():
+    print("Welcome to Python Age Calculator. \n\nPlease select from one of the below options:")
+    askForUserInput()
+
+    # currentDate = date.today()
+    # birthDate = date(1994,7,23)    #date(yyyy,m,d)
+    # futureDate = date(2032,7,1)
+    #
+    # print("\n\nAge of the person born on", birthDate.strftime("%d %B, %Y"),":\n", ageInYearsMonthsAndDays(futureDate, birthDate))
+    # print(" or", ageInWeeks(futureDate, birthDate))
+    # print(" or", ageInDays(futureDate, birthDate), " days\n\n" )
 
 if __name__ == '__main__':
     main()
